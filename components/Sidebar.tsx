@@ -4,6 +4,9 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { AiFillHome, AiOutlineMenu } from 'react-icons/ai';
 import { ImCancelCircle } from 'react-icons/im';
+import Discover from './Discover';
+import Footer from './Footer';
+import SuggestedAccounts from './SuggestedAccounts';
 
 const Sidebar: NextPage = () => {
   const [showSidebar, setShowSidebar] = useState<Boolean>(true);
@@ -13,6 +16,7 @@ const Sidebar: NextPage = () => {
     'flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold text-[#F51997] rounded';
   const normalLink =
     'flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold rounded';
+  
   return (
     <div>
       <div
@@ -35,6 +39,9 @@ const Sidebar: NextPage = () => {
               </div>
             </Link>
           </div>
+          <Discover />
+          <SuggestedAccounts/>
+          <Footer/>
         </div>
       )}
     </div>
