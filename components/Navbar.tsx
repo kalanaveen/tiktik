@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
 import { IoMdAdd } from 'react-icons/io';
+import { createOrGetUser } from '../utils';
 
 const Navbar = () => {
   const [user, setUser] = useState<IUser | null>();
@@ -67,7 +68,7 @@ const Navbar = () => {
           </div>
         ) : (
           <GoogleLogin
-            onSuccess={(response) => console.log(response)}
+            onSuccess={(response) => createOrGetUser(response)}
             onError={() => console.log('error')}
           />
         )}
