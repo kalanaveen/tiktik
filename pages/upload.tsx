@@ -31,15 +31,16 @@ const upload = () => {
     const selectedFile = e.target.files[0];
     const fileTypes = ['video/mp4', 'video/webm', 'video/ogg'];
 
-    // uploading asset to sanity 
+    // uploading asset to sanity
     if (fileTypes.includes(selectedFile.type)) {
       setWrongFileType(false);
       setLoading(true);
 
-      client.assets.upload('file', selectedFile, {
-        contentType: selectedFile.type,
-        filename: selectedFile.name,
-      })
+      client.assets
+        .upload('file', selectedFile, {
+          contentType: selectedFile.type,
+          filename: selectedFile.name,
+        })
         .then((data) => {
           setVideoAsset(data);
           setLoading(false);
@@ -49,8 +50,38 @@ const upload = () => {
       setWrongFileType(true);
     }
   };
-  const handlePost = () => {};
-  const handleDiscard = () => {};
+  const handlePost = async () => {
+    if (caption && videoAsset?._id && topic) {
+      setSavingPost(true);
+
+      const doc = {
+        _type: 'post',
+        caption,
+        video: {
+          _type: 'file',
+          asset: {
+            _type: 'reference',
+            _ref: videoAsset?._id,
+          },
+        },
+        userId: userProfile?._id,
+        postedBy: {
+          _type: 'postedBy',
+          _ref: userProfile?._id,
+        },
+        topic,
+      };
+      await axios.post(`${BASE_URL}/api/post`, doc);
+      router.push('/');
+    }
+  };
+
+  const handleDiscard = () => {
+    setSavingPost(false);
+    setVideoAsset(undefined);
+    setCaption('');
+    setTopic('');
+  };
 
   return (
     <div className="flex w-full h-full absolute left-0 top-[60px] lg:top-[70px] mb-10 pt-10 lg:pt-20 bg-[#F8F8F8] justify-center">
